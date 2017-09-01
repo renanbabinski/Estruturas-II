@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-struct node{
+struct no{
 	int key;  					//chave de identificação do nodo	
-	node * left, * right;		//ponteiros para os filhos
+	struct no *left;
+	struct no *right;		   //ponteiros para os filhos
 };
 
-
+typedef struct no node;
 
 
 //busca por uma chave k na árvore com raiz r
@@ -59,7 +59,7 @@ node * insert (node * r, int key){
 
 //remove o nodo da árvore com raiz r que possui chave igual a key
 //(lembra que tem que dar free no nodo)
-void remove (node * r, int key);
+//void remove (node * r, int key);
 
 
 
