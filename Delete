@@ -1,0 +1,29 @@
+transplante (t,u,r)
+	se u->pai == Null
+		t->raiz = v;
+	Senao se u == u->pai->esq
+		u->pai->esq = v;
+	senao
+		u->pai->dir = v;
+	Se v!=NULL;
+		v->pai = u->pai;
+		
+
+Delecao(t,x)
+	Se x->esq == NULL
+		transpalnte(t,x,x-.dir)
+	Senao Se x->dir == NULL;
+		transplante(t,x,x->esq)
+	Senao
+		y = min(x->dir)
+		Se y!= x->dir
+			transplante(t,y,y->dir)
+			y->dir = x->dir;
+			y>dir->pai = y;
+			transplante(t,x,y)
+			y->esq = x->esq;
+			y->esq->pai = y;
+		libera(x)
+		
+		
+Livro: Thomas H. Cokman
