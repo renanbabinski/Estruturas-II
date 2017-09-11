@@ -2,29 +2,50 @@
 #include <stdio.h>
 
 struct no{
-	int key;  					//chave de identificação do nodo	
+	int key;  						
 	struct no *left;
-	struct no *right;		   //ponteiros para os filhos
+	struct no *right;		   
 };
 
 typedef struct no node;
 
+//////////////////////////////////////////
 
-//busca por uma chave k na árvore com raiz r
-//caso a chave não estiver na árvore retorna NULL
+int menuprincipal(int menu);
+node * search (node * r, int key);
+void * inorder (node * r);
+node * insert (node * r, int key);
+
+//////////////////////////////////////////
+
+int menuprincipal(int menu){
+	system("clear");
+	printf(" MENU PRINCIPAL:\n\n");
+	printf("1--Inserir novos nodos\n");
+	printf("2--Buscar um nodo na árvore\n");
+	printf("3--Imprimir a árvore\n");
+	printf("4--Deletar um nodo\n");
+	printf("0--EXIT\n");
+	scanf("%d",&menu);
+	getchar();
+	return menu;
+}
 
 node * search (node * r, int key){
-	if(!r || r->key == key ) return r;				//n encontrou a chave
+	if(!r || r->key == key ) return r;				
 
 	if(key <= r->key) return search (r->left, key);
 	
 	return search (r->right, key); 	
 }
 
-
-//mostra todas as chaves da árvore
-
-void * print (node * r);
+void * inorder (node * r){
+	if(r != NULL){
+		inorder(r->left);
+		printf("%d\n",r->key);
+		inorder(r->right);
+	}
+}
 
 //insere um nodo com chave key na árvore com raiz r
 //retorna um ponteiro para a raiz da árvore
@@ -61,27 +82,51 @@ node * insert (node * r, int key){
 //(lembra que tem que dar free no nodo)
 //void remove (node * r, int key);
 
-
-
 int main ( void ){
 
-	int n;
+	int n,menu = 10;
 	
 	node * root = NULL;
 
-	
-	while(scanf("%d", &n)){
-		root = insert(root, n);
+	while(menu != 0){
+		menu = menuprincipal(menu);
+		switch(menu){
+			case 1:
+				printf("\nInsira os numeros com ENTER até que uma letra seja digitada:\n");
+				while(scanf("%d", &n)){
+					root = insert(root, n);
+				}
+				getchar();
+				printf("\nNumeros inseridos na árvore!\nPressione ENTER para continuar...\n");
+				getchar();
+				getchar();
+				break;
+			case 2:
+				printf("\nDigite um número para buscar na árvore:\n");
+				scanf("%d",&n);
+				getchar();
+				if(search(root,n))
+					printf("O numero está na árvore!!!\n");
+				else
+					printf("Numero não encontrado na árvore!!!\n");
+				printf("\nPressione ENTER para continuar...");
+				getchar();
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 0:
+				break;
+		}
 	}
 
-	if(search(root, 7)) printf("achouUU!");
-	else printf("nao achooou :(");
+	inorder(root);
 	
 	
-	
-
 	return 0;
-}
+		}
+
 
 
 
