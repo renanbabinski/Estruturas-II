@@ -23,8 +23,10 @@ int menuprincipal(int menu){
 	printf(" MENU PRINCIPAL:\n\n");
 	printf("1--Inserir novos nodos\n");
 	printf("2--Buscar um nodo na árvore\n");
-	printf("3--Imprimir a árvore\n");
-	printf("4--Deletar um nodo\n");
+	printf("3--Deletar um nodo\n");
+	printf("4--Imprimir árvore IN ORDER\n");
+	printf("5--Imprimir árvore PRE ORDER\n");
+	printf("6--Imprimir árvore POS ORDER\n");
 	printf("0--EXIT\n");
 	scanf("%d",&menu);
 	getchar();
@@ -115,15 +117,16 @@ int main ( void ){
 			case 3:
 				break;
 			case 4:
+				printf("\nElementos da árvore (IN ORDER) : \n");
+				inorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
 				break;
 			case 0:
 				break;
 		}
 	}
 
-	inorder(root);
-	
-	
 	return 0;
 		}
 
