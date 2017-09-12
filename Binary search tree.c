@@ -15,6 +15,8 @@ int menuprincipal(int menu);
 node * search (node * r, int key);
 void * inorder (node * r);
 node * insert (node * r, int key);
+node* MenorNodo(node* node);
+node* delete(node* root, int key);
 
 //////////////////////////////////////////
 
@@ -41,7 +43,7 @@ node * search (node * r, int key){
 	return search (r->right, key); 	
 }
 
-void * inorder (node * r){
+void *inorder (node * r){
 	if(r != NULL){
 		inorder(r->left);
 		printf("%d\n",r->key);
@@ -49,22 +51,19 @@ void * inorder (node * r){
 	}
 }
 
-//insere um nodo com chave key na árvore com raiz r
-//retorna um ponteiro para a raiz da árvore
-
 node * insert (node * r, int key){
-	node * n = (node *)malloc(sizeof(node));		//cria um novo nodo
+	node * n = (node *)malloc(sizeof(node));		
 	n->left = n->right = NULL;
 	n->key = key;
 			
-	if(!r) return n;			// se a arvore estiver vazia
+	if(!r) return n;			
 
 	node * it = r;	
 
 	while(1){
 		if(key < it->key){
 			if(!it->left){
-				it->left = n; 		//atualiza o filho da esquerda de r	
+				it->left = n; 		
 				break;		
 			}
 			it = it->left;	
@@ -80,9 +79,49 @@ node * insert (node * r, int key){
 	return r;
 }
 
-//remove o nodo da árvore com raiz r que possui chave igual a key
-//(lembra que tem que dar free no nodo)
-//void remove (node * r, int key);
+/* Essa função é chamada no caso da deleção de um Nodo com dois filhos,
+ela encontra o menor valor da sub-árvore a direita do Nodo a ser deletado,
+então, retorna o menor Nodo para substituição*/
+node* MenorNodo(node* no){
+	node* aux = no;
+	while(aux->left != NULL)
+		aux = aux->left;
+	return aux;
+}
+
+/*Recebe uma árvore binária de busca e uma chave,
+essa função deleta a chave e retorna uma nova raiz*/
+node* delete(node* root, int key){
+	if(root == NULL)    //árvore vazia
+		return root;
+	if(key < root->key)  //Se a chave for menor que a chave da raiz
+		root->left = delete(root->left, key);
+	else if(key > root->key)  //Se a chave for maior que a chave da raiz
+		root->right = delete(root->right, key);
+	//Se a chave é igual a chave da raiz, então esse é o Nodo a ser deletado
+	else{
+		//Se o nodo tiver um ou nenhum filho
+		if(root->left == NULL){
+			node* temp = root->right;
+			free(root);
+			return temp;
+		}
+		else if(root->right == NULL){
+			node* temp = root->left;
+			free(root);
+			return temp;
+		}
+		//Se o nodo tiver dois filhos, achar o menor valor da sub-árvore a direita
+		node* temp = MenorNodo(root->right);
+		//Substituir o nodo raiz pelo menor nodo
+		root->key = temp->key;
+		//Deletar o menor nodo da árvore
+		root->right = delete(root->right,temp->key);
+	}
+	return root;
+}
+
+/////////////////////////////////////
 
 int main ( void ){
 
@@ -115,6 +154,15 @@ int main ( void ){
 				getchar();
 				break;
 			case 3:
+				printf("\nDigite o número que deseja excluir da árvore:\n");
+				scanf("%d",&n);
+				getchar();
+				if(delete(root,n) == NULL)
+					printf("O número não existe na árvore!!!\n");
+				else
+					printf("***Deletado com sucesso***\n");
+				printf("Pressione ENTER para continuar...\n");
+				getchar();
 				break;
 			case 4:
 				printf("\nElementos da árvore (IN ORDER) : \n");
@@ -122,7 +170,13 @@ int main ( void ){
 				printf("\nPressione ENTER para continuar...");
 				getchar();
 				break;
+			case 5:
+				break;
+			case 6:
+				break;
 			case 0:
+				break;
+			default:
 				break;
 		}
 	}
