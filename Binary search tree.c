@@ -51,6 +51,22 @@ void *inorder (node * r){
 	}
 }
 
+void *preorder(node * r){
+	if(r != NULL){
+		printf("%d\n",r->key);
+		preorder(r->left);
+		preorder(r->right);
+	}
+}
+
+void posorder(node * r){
+	if(r != NULL){
+		posorder(r->left);
+		posorder(r->right);
+		printf("%d\n",r->key);
+	}
+}
+
 node * insert (node * r, int key){
 	node * n = (node *)malloc(sizeof(node));		
 	n->left = n->right = NULL;
@@ -161,8 +177,8 @@ int main ( void ){
 					printf("O número não existe na árvore!!!\n");
 				else
 					printf("***Deletado com sucesso***\n");
-				printf("Pressione ENTER para continuar...\n");
-				getchar();
+					printf("Pressione ENTER para continuar...\n");
+					getchar();
 				break;
 			case 4:
 				printf("\nElementos da árvore (IN ORDER) : \n");
@@ -171,8 +187,16 @@ int main ( void ){
 				getchar();
 				break;
 			case 5:
+				printf("\nElementos da árvore (PRE ORDER) : \n");
+				preorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
 				break;
 			case 6:
+				printf("\nElementos da árvore (POS ORDER) : \n");
+				posorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
 				break;
 			case 0:
 				break;
