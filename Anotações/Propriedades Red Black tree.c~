@@ -1,0 +1,69 @@
+Red Black Tree
+
+->todo nó é vermelho ou preto;
+->a raiz sempre é preta;
+->todo nó folha é preto;
+->Se um nodo é vermelho, entao os filhos dele são pretos;
+->Para todos os caminhos da raiz até uma folha a quantidade de nós pretos é igual;
+
+->>Rotação a esquerda
+
+Rotateleft(t,x)
+
+	x=y->dir;
+	x->dir = y->esq;
+	Se y->esq != t->nil;
+		y->esq->pai = x;
+	y->pai = x->pai;
+	Se x->pai == t->nil    /x é raiz
+		t->raiz = y;
+	Senão Se x = x->pai->esq;
+		x->pai->esq = y;
+	Senão 
+		x->pai->dir = y
+		y->esq = x;
+		x->pai = y;
+
+
+->>>Arrumar a árvore
+	
+Arruma(t,z)
+	
+	enquanto z->pai->cor == vermelho
+		Se z->pai == z->pai->pai->esq
+			y = z->pai->pai->dir;
+			Se y->cor == vermelho
+				y->cor == preto;
+				z->pai->cor = preta;
+				z->pai->pai->cor = vermelho;
+				z = z->pai->pai;
+			Senao Se z = z->pai->dir
+				z=z->pai;
+				
+				
+				
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
