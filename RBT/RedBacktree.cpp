@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
 #define RED false
 #define BLACK true
 
@@ -11,13 +9,10 @@ struct node{
 	bool c;
 };
 
-
 struct rbtree{
 	node * root;
 	node * nil;
 };
-
-
 
 rbtree * dinossauro_inicia (){
 	rbtree * nova = (rbtree *)malloc(sizeof(rbtree));
@@ -30,7 +25,6 @@ rbtree * dinossauro_inicia (){
 	nova->root = nova->nil;
 	return nova;
 } 
-
 
 void insert ( rbtree * T, int k ){
 	node * n = (node *)malloc(sizeof(node));
@@ -66,7 +60,33 @@ void insert ( rbtree * T, int k ){
 
 }
 
+/*void preorder(rbtree * r){
+	if(r->root != r->nil){
+		printf("%d\n",r->root->key);
+		preorder(r->root->left);
+		preorder(r->root->right);
+	}
+}*/
+
 int main ( void ){
+
+	rbtree* root = dinossauro_inicia();
+	insert(root,5);
+	insert(root,4);
+	printf("%d",root->root->key);
+	printf("\n%d",root->root->left->key);
+
+
+
+
+
+
+
+
+
+	printf("\n\n\nHELLO\n\n\n");
+
+
 
 	return 0;
 }
