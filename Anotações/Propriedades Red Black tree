@@ -24,6 +24,24 @@ Rotateleft(t,x)
 		y->esq = x;
 		x->pai = y;
 
+->>Rotação a direita
+
+Rotateright(t,x)
+
+	x=y->esq;
+	x->esq = y->dir;
+	Se y->dir!= t->nil;
+		y->dir->pai = x;
+	y->pai = x->pai;
+	Se x->pai == t->nil    /x é raiz
+		t->raiz = y;
+	Senão Se x = x->pai->dir;
+		x->pai->dir = y;
+	Senão
+		x->pai->esq = y;
+		y->dir = x;
+		x->pai = y;
+
 
 ->>>Arrumar a árvore
 	
