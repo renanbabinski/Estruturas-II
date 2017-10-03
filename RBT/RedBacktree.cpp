@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #define RED false
 #define BLACK true
 
@@ -95,12 +96,17 @@ void insert_fix_up(rbtree* T,node* z){
 				y->c = BLACK;
 				z->p->p->c = RED;
 				z = z->p->p;
-				}else if(z == z->p->right){
-					z = z->p;
-					left_rotate(T,z);
-					z->p->c = BLACK;
-					z->p->p->c = RED;
-					right_rotate(T,z->p->p);
+				}else{
+					 if(z == z->p->right){
+						z = z->p;
+						left_rotate(T,z);
+						z->p->c = BLACK;
+						z->p->p->c = RED;
+						right_rotate(T,z->p->p);
+					}else{
+						z = z->p;
+						right_rotate(T,z);
+					}
 				}
 		}else{
 			y = z->p->p->left;
@@ -153,7 +159,7 @@ void right_rotate(rbtree* T, node* x){
 	if(y->right != T->nil)
 		y->right->p = x;
 	y->p = x->p;
-	if(x->p == NULL)
+	if(x->p == T->nil)
 		T->root = y;
 	else if(x == x->p->right)
 		x->p->right = y;
@@ -197,6 +203,107 @@ void posorder(node* r, node* nil){
 			printf("BLACK\n");
 		printf("%d\n\n",r->key);
 	}
+}
+
+int* gera_vetor(){
+	int i,j,valor,status;
+	int *vet;
+	vet = (int*)malloc(40*sizeof(int));
+
+	srand((unsigned)time(NULL));
+
+	for(i=0;i<40;i++){
+		do{
+			valor = 1+rand()%40;
+			status = 1;
+			for(j=0;j<=i;j++){
+				if(vet[j]==valor){
+					status = 0;
+				}
+			}
+		}while(status == 0);
+		vet[i] = valor;
+	}
+	return vet;
+}
+
+void deleta(rbtree* T,node* z){
+	if(z->left == T->nil || z->right == T->nil)
+		y = z;
+		else
+			y = tree_sucessor();
+	if(y->left != T->nil)
+		x = y->left;
+		else
+			x = y->right;
+	x->p = y->p;
+	if(y->p == T->nil)
+		T->root = x;
+		else if(y == y->p->left)
+			y->p->left = x;
+		else
+			y->p->right = x;
+	if(y != z)
+		z->key = y->key;
+	if(y->c == BLACK)
+		delete_fix_up(T,x);
+
+	return y;	
+}
+
+void delete_fix_up(rbtree* T,node* x){
+	node* w;
+
+	while(x != T->root && x->c == BLACK){
+		if(x == x->p->left){
+			w = x->p->right;
+			if(w->c == RED){
+				w->c = BLACK;
+				x->p->c = RED;
+				left_rotate(T,x->p);
+				w = x->p->right;
+			}
+			if(w->left->c == BLACK && w->right->c == BLACK){
+				w->c = RED;
+				x = x->p;
+				else if(w->right->c == BLACK){
+					w->left->c = BLACK;
+					w->c = RED;
+					right_rotate(T,w);
+					w = x->p->right;
+			}
+				w->c = w->p->c;
+				x->p->c = BLACK;
+				w->right->c = BLACK;
+				left_rotate(T,x->p);
+				x = T->root;
+			}
+		}else{
+			w = x->p->left;
+			if(w->c == RED){
+				w->c = BLACK;
+				x->p->c = RED;
+				right_rotate(T,x->p);
+				w = x->p->left;
+			}
+			if(w->right->c == BLACK && w->left->c == BLACK){
+				w->c = RED;
+				x = x->p;
+				else if(w->left->c == BLACK){
+					w->right->c = BLACK;
+					w->c = RED;
+					left_rotate(T,w);
+					w = x->p->left;
+			}
+				w->c = w->p->c;
+				x->p->c = BLACK;
+				w->left->c = BLACK;
+				right_rotate(T,x->p);
+				x = T->root;
+			}
+		}
+	}
+	x->c = BLACK;
 }
 
 int main(){
@@ -262,34 +369,54 @@ int main(){
 				break;
 		}
 	}*/
-
-
-
-
-
 	rbtree* root = root_init();
-	insert(root,8);
-	insert(root,10);
-	insert(root,23);
-	insert(root,6);
-	insert(root,9);
-	insert(root,0);
-	insert(root,12);
-	insert(root,35);
+
+	/*int *vet;
+	int i;
+
+	vet = gera_vetor();
+	for(i=0;i<40;i++){
+		printf("Número que será inserido na árvore:\n");
+		printf("%d -> %d\n",i,*vet);
+		getchar();
+		system("clear");
+		insert(root,*vet);
+		preorder(root->root,root->nil);
+		vet++;
+	}*/
+
+
+	
+	insert(root,40);
 	insert(root,24);
-	insert(root,15);
-	insert(root,3);
+	insert(root,32);
+	insert(root,9);
+	insert(root,19);
+	insert(root,17);
+	insert(root,39);
+	insert(root,4);
+	insert(root,18);
+	/*insert(root,15);
+	insert(root,11);
+	insert(root,32);
+	insert(root,34);
+	insert(root,50);
+	insert(root,10);
+	insert(root,2);
+	insert(root,1);
+	insert(root,64);
+	insert(root,17);*/
 
 	//printf("%d",root->root->key);
-	preorder(root->root,root->nil);
+	//preorder(root->root,root->nil);
 
-	printf("\n\n\n");
+	/*printf("\n\n\n");
 
 	posorder(root->root,root->nil);
 
 	printf("\n\n\n");
 
-	inorder(root->root,root->nil);
+	inorder(root->root,root->nil);*/
 	
 
 
