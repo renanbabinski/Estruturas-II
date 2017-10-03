@@ -15,17 +15,31 @@ struct rbtree{
 };
 
 ///////////////////////////////////////////////
-rbtree * dinossauro_inicia ();
+rbtree * root_init ();
 void insert ( rbtree * T, int k );
 void insert_fix_up(rbtree* T,node* z);
 void left_rotate(rbtree* T, node* x);
 void right_rotate(rbtree* T, node* x);
 void preorder(node* r, node* nil);
+int menuprincipal(int menu);
+//////////////////////////////////////////////
 
+int menuprincipal(int menu){
+	system("clear");
+	printf(" MENU PRINCIPAL:\n\n");
+	printf("1--Inserir novos nodos\n");
+	printf("2--Buscar um nodo na árvore\n");
+	printf("3--Deletar um nodo\n");
+	printf("4--Imprimir árvore IN ORDER\n");
+	printf("5--Imprimir árvore PRE ORDER\n");
+	printf("6--Imprimir árvore POS ORDER\n");
+	printf("0--EXIT\n");
+	scanf("%d",&menu);
+	getchar();
+	return menu;
+}
 
-
-
-rbtree * dinossauro_inicia (){
+rbtree * root_init(){
 	rbtree * nova = (rbtree *)malloc(sizeof(rbtree));
 	nova->nil = (node *)malloc(sizeof(node));
 
@@ -81,7 +95,7 @@ void insert_fix_up(rbtree* T,node* z){
 				y->c = BLACK;
 				z->p->p->c = RED;
 				z = z->p->p;
-				}else if(z == z->p->left){
+				}else if(z == z->p->right){
 					z = z->p;
 					left_rotate(T,z);
 					z->p->c = BLACK;
@@ -95,12 +109,18 @@ void insert_fix_up(rbtree* T,node* z){
 				y->c = BLACK;
 				z->p->p->c = RED;
 				z = z->p->p;
-			}else if(z == z->p->right){
-				z = z->p;
-				left_rotate(T,z);
-				z->p->c = BLACK;
-				z->p->p->c = RED;
-				right_rotate(T,z->p->p);
+			}else{ 
+				if(z == z->p->left){
+					z = z->p;
+					right_rotate(T,z);
+					z->p->c = BLACK;
+					z->p->p->c = RED;
+					left_rotate(T,z->p->p);
+				}else{
+					z = z->p;
+					left_rotate(T,z);
+				}
+
 			}
 		}
 	}
@@ -155,34 +175,123 @@ void preorder(node* r, node* nil){
 	}
 }
 
+void inorder(node* r, node* nil){
+	if(r != nil){
+		inorder(r->left,nil);
+		if(r->c == RED)
+			printf("RED\n");
+		else 
+			printf("BLACK\n");
+		printf("%d\n\n",r->key);
+		inorder(r->right,nil);
+	}
+}
+
+void posorder(node* r, node* nil){
+	if(r != nil){
+		posorder(r->left,nil);
+		posorder(r->right,nil);
+		if(r->c == RED)
+			printf("RED\n");
+		else 
+			printf("BLACK\n");
+		printf("%d\n\n",r->key);
+	}
+}
+
 int main(){
 
-	rbtree* root = dinossauro_inicia();
+	/*int menu = 10;
+
+	while(menu != 0){
+		menu = menuprincipal(menu);
+		switch(menu){
+			case 1:
+				printf("\nInsira os numeros com ENTER até que uma letra seja digitada:\n");
+				while(scanf("%d", &n)){
+					root = insert(root, n);
+				}
+				getchar();
+				printf("\nNumeros inseridos na árvore!\nPressione ENTER para continuar...\n");
+				getchar();
+				getchar();
+				break;
+			case 2:
+				printf("\nDigite um número para buscar na árvore:\n");
+				scanf("%d",&n);
+				getchar();
+				if(search(root,n))
+					printf("O numero está na árvore!!!\n");
+				else
+					printf("Numero não encontrado na árvore!!!\n");
+				printf("\nPressione ENTER para continuar...");
+				getchar();
+				break;
+			case 3:
+				printf("\nDigite o número que deseja excluir da árvore:\n");
+				scanf("%d",&n);
+				getchar();
+				if(delete(root,n) == NULL)
+					printf("O número não existe na árvore!!!\n");
+				else
+					printf("***Deletado com sucesso***\n");
+					printf("Pressione ENTER para continuar...\n");
+					getchar();
+				break;
+			case 4:
+				printf("\nElementos da árvore (IN ORDER) : \n");
+				inorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
+				break;
+			case 5:
+				printf("\nElementos da árvore (PRE ORDER) : \n");
+				preorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
+				break;
+			case 6:
+				printf("\nElementos da árvore (POS ORDER) : \n");
+				posorder(root);
+				printf("\nPressione ENTER para continuar...");
+				getchar();
+				break;
+			case 0:
+				break;
+			default:
+				break;
+		}
+	}*/
+
+
+
+
+
+	rbtree* root = root_init();
 	insert(root,8);
 	insert(root,10);
 	insert(root,23);
-	//insert(root,6);
-	//insert(root,9);
-	//insert(root,0);
-	//insert(root,12);
-	//insert(root,35);
-	//insert(root,24);
-	//insert(root,15);
-	//insert(root,3);
+	insert(root,6);
+	insert(root,9);
+	insert(root,0);
+	insert(root,12);
+	insert(root,35);
+	insert(root,24);
+	insert(root,15);
+	insert(root,3);
 
 	//printf("%d",root->root->key);
 	preorder(root->root,root->nil);
+
+	printf("\n\n\n");
+
+	posorder(root->root,root->nil);
+
+	printf("\n\n\n");
+
+	inorder(root->root,root->nil);
 	
 
-
-
-
-
-
-
-
-
-	printf("\n\n\nHELLO\n\n\n");
 
 
 
