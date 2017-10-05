@@ -23,6 +23,12 @@ void left_rotate(rbtree* T, node* x);
 void right_rotate(rbtree* T, node* x);
 void preorder(node* r, node* nil);
 int menuprincipal(int menu);
+node * search (rbtree* T, node * r, int key);
+node* MenorNodo(rbtree* T, node* no);
+node* tree_sucessor(rbtree* T,node* n);
+void delete_fix_up(rbtree* T,node* x);
+void deleta(rbtree* T, int key);
+int* gera_vetor();
 //////////////////////////////////////////////
 
 int menuprincipal(int menu){
@@ -227,11 +233,18 @@ int* gera_vetor(){
 	return vet;
 }
 
-void deleta(rbtree* T,node* z){
+void deleta(rbtree* T, int key){
+	node* z = search(T, T->root, key);
+	node* y ,* x;
+	if(z == T->nil){
+		printf("Numero não encontrado na árvore!");
+		getchar();
+		return ;
+	}
 	if(z->left == T->nil || z->right == T->nil)
 		y = z;
 		else
-			y = tree_sucessor();
+			y = tree_sucessor(T,z);
 	if(y->left != T->nil)
 		x = y->left;
 		else
@@ -247,8 +260,7 @@ void deleta(rbtree* T,node* z){
 		z->key = y->key;
 	if(y->c == BLACK)
 		delete_fix_up(T,x);
-
-	return y;	
+	
 }
 
 void delete_fix_up(rbtree* T,node* x){
@@ -266,12 +278,12 @@ void delete_fix_up(rbtree* T,node* x){
 			if(w->left->c == BLACK && w->right->c == BLACK){
 				w->c = RED;
 				x = x->p;
-				else if(w->right->c == BLACK){
+				}else if(w->right->c == BLACK){
 					w->left->c = BLACK;
 					w->c = RED;
 					right_rotate(T,w);
 					w = x->p->right;
-			}
+			
 				w->c = w->p->c;
 				x->p->c = BLACK;
 				w->right->c = BLACK;
@@ -289,12 +301,12 @@ void delete_fix_up(rbtree* T,node* x){
 			if(w->right->c == BLACK && w->left->c == BLACK){
 				w->c = RED;
 				x = x->p;
-				else if(w->left->c == BLACK){
+				}else if(w->left->c == BLACK){
 					w->right->c = BLACK;
 					w->c = RED;
 					left_rotate(T,w);
 					w = x->p->left;
-			}
+			
 				w->c = w->p->c;
 				x->p->c = BLACK;
 				w->left->c = BLACK;
@@ -304,6 +316,33 @@ void delete_fix_up(rbtree* T,node* x){
 		}
 	}
 	x->c = BLACK;
+}
+
+node* tree_sucessor(rbtree* T,node* n){
+	if(n->right != T->nil)
+		return MenorNodo(T,n->right);
+	node* parent = n->p;
+	while(parent != T->nil && n == parent->right){
+		n = parent;
+		parent = parent->p;
+	}
+	return parent;
+}
+
+node* MenorNodo(rbtree* T, node* no){
+	node* aux = no;
+	while(aux->left != T->nil)
+		aux = aux->left;
+	return aux;
+}
+
+node * search (rbtree* T, node * r, int key){
+	if(r == T->nil || r->key == key ) return r;				
+
+	if(key <= r->key) return search (T,r->left, key);
+	
+	return search (T,r->right, key);
+
 }
 
 int main(){
@@ -396,6 +435,24 @@ int main(){
 	insert(root,39);
 	insert(root,4);
 	insert(root,18);
+
+
+	preorder(root->root,root->nil);
+	printf("\n\n\n");
+
+
+	deleta(root,24);
+	//deleta(root,18);
+	//deleta(root,19);
+	//deleta(root,40);
+	//deleta(root,39);
+	//eleta(root,4);
+	
+
+
+
+
+
 	/*insert(root,15);
 	insert(root,11);
 	insert(root,32);
@@ -408,7 +465,7 @@ int main(){
 	insert(root,17);*/
 
 	//printf("%d",root->root->key);
-	//preorder(root->root,root->nil);
+	preorder(root->root,root->nil);
 
 	/*printf("\n\n\n");
 
